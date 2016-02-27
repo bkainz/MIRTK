@@ -455,7 +455,7 @@ public:
   friend Cifstream& operator>> (Cifstream&, Matrix&);
 
   /// Print matrix
-  void Print(Indent = 0) const;
+  void Print(Indent i) const;
 
   /// Read matrix from file
   void Read(const char *);

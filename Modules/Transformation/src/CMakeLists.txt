@@ -22,6 +22,16 @@
 # @brief Build configuration of MIRTK Transformation library.
 ##############################################################################
 
+#bkainz 2016/02/27:
+#I don't know where to place this in the depends script
+#or whereever this would please the code-copy haters
+if(WIN32)
+basis_find_package(ZLIB)
+  if (ZLIB_FOUND)
+    basis_use_package(ZLIB)
+  endif ()
+endif ()
+
 set(HEADERS
   mirtkAffineTransformation.h
   mirtkBSplineFreeFormTransformation3D.h

@@ -255,12 +255,15 @@ void GenericImage<VoxelType>::Initialize(const ImageAttributes &a, int n, VoxelT
 }
 
 // -----------------------------------------------------------------------------
+#ifndef WIN32
+//bkainz 2016/02/27:
+//could not find the second same conversion
 template <class VoxelType>
 void GenericImage<VoxelType>::Initialize(const ImageAttributes &attr, int n)
 {
-  this->Initialize(attr, n, NULL);
+  this->Initialize(attr, n, 0);
 }
-
+#endif
 // -----------------------------------------------------------------------------
 template <class VoxelType>
 void GenericImage<VoxelType>::Initialize(const ImageAttributes &attr, VoxelType *data)

@@ -81,7 +81,7 @@ using std::copysign;
 /// Check if floating point value is not a number (NaN)
 MIRTKCU_API inline bool IsNaN(double x)
 {
-#if WINDOWS
+#ifdef WIN32
   return _isnan(x);
 #else
   return ::isnan(x);
@@ -92,7 +92,7 @@ MIRTKCU_API inline bool IsNaN(double x)
 /// Check if floating point value represents infinity
 MIRTKCU_API inline bool IsInf(double x)
 {
-#if WINDOWS
+#ifdef WIN32
   return !_finite(x);
 #else
   return ::isinf(x);

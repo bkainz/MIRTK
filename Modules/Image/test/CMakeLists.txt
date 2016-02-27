@@ -17,6 +17,13 @@
 # limitations under the License.
 # ============================================================================
 
+if(WIN32)
+basis_find_package(ZLIB)
+  if (ZLIB_FOUND)
+    basis_use_package(ZLIB)
+  endif ()
+endif ()
+
 macro (add_image_test class_name)
   mirtk_add_test(${class_name} DEPENDS LibImage)
 endmacro ()

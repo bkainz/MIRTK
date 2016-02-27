@@ -47,12 +47,19 @@ mark_as_advanced(BUILD_ALL_MODULES)
 
 # Choose build configuration from CMake list of common configuration types
 if (CMAKE_CONFIGURATION_TYPES)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS ${CMAKE_CONFIGURATION_TYPES})
+  #set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS ${CMAKE_CONFIGURATION_TYPES})
   set_property(CACHE CMAKE_CONFIGURATION_TYPES PROPERTY TYPE INTERNAL)
 endif ()
 
 # Choose between shared or static linkage (shared is recommended)
-option(BUILD_SHARED_LIBS "Request build of shared libraries" ON)
+# bkainz 2016/02/27:
+# if you provide this option then you also need to properly export 
+# the dll symbols for Windows using __declspec(dllexport)
+if(WIN32)
+  option(BUILD_SHARED_LIBS "Request build of shared libraries" OFF)
+else(WIN32)
+  option(BUILD_SHARED_LIBS "Request build of shared libraries" ON)
+endif(WIN32)
 mark_as_advanced(BUILD_SHARED_LIBS)
 
 # Enable profiling of program execution (cf. Common/include/mirtkProfiling.h)

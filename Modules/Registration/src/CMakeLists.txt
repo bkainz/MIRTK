@@ -22,6 +22,17 @@
 # @brief Build configuration of MIRTK Registration library.
 ##############################################################################
 
+#bkainz 2016/02/27:
+#I don't know where to place this in the depends script
+#or whereever this would please the code-copy haters
+if(WIN32)
+basis_find_package(ZLIB)
+  if (ZLIB_FOUND)
+    basis_use_package(ZLIB)
+  endif ()
+endif ()
+
+
 set(HEADERS
   ${BINARY_INCLUDE_DIR}/mirtkRegistrationConfig.h
   mirtkCosineOfNormalizedGradientField.h

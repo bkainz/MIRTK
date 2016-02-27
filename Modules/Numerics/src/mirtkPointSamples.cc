@@ -16,6 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifdef WIN32
+#define USE_MATH_DEFINES
+#include <math.h>
+#ifndef M_PI_2
+#define M_PI_2     1.57079632679489661923132169164      // Pi/2 
+#endif
+#endif
 
 #include <mirtkPointSamples.h>
 

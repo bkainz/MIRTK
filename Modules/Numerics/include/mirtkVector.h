@@ -244,7 +244,7 @@ public:
   // I/O
 
   /// Print vector
-  void Print(Indent = 0) const;
+  void Print(Indent i) const;
 
   /// Read vector from file
   void Read(const char *);

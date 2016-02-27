@@ -22,6 +22,13 @@
 # @brief Build configuration of MIRTK Image library.
 ##############################################################################
 
+if(WIN32)
+basis_find_package(ZLIB)
+  if (ZLIB_FOUND)
+    basis_use_package(ZLIB)
+  endif ()
+endif ()
+
 # ------------------------------------------------------------------------------
 # Source files
 set(HEADERS

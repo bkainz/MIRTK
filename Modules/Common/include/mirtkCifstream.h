@@ -24,9 +24,9 @@
 #include <mirtkCommonConfig.h>
 
 #if MIRTK_Common_WITH_ZLIB
-#  include <zlib.h>
+#include <zlib.h>
 #else
-#  include <cstdio>
+#include <cstdio>
 #endif
 
 
