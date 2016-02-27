@@ -243,7 +243,7 @@ struct ImageAttributes
   // Output
 
   /// Print attributes
-  void Print(Indent = 0) const;
+  void Print(Indent indent = 0) const;
 
 };
 

@@ -1395,7 +1395,7 @@ void BSplineFreeFormTransformation3D::BendingEnergyGradient(double *gradient, do
   if (_z == 1) {
 
     // Initialize static lookup table
-    Evaluate2ndOrderBSplineFFDDerivatives::InitializeLookupTable2D();
+	  BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::InitializeLookupTable2D();
 
     // Add a layer of boundary voxels to avoid additional boundary conditions
     ImageAttributes attr = this->Attributes();
@@ -1407,7 +1407,7 @@ void BSplineFreeFormTransformation3D::BendingEnergyGradient(double *gradient, do
     GenericImage<Vector> dxy(attr);
     GenericImage<Vector> dyy(attr);
 
-    Evaluate2ndOrderBSplineFFDDerivatives eval(this, wrt_world);
+	BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives eval(this, wrt_world);
     ParallelForEachVoxel(attr, dxx, dxy, dyy, eval);
 
     // Compute 3rd order derivatives, twice w.r.t. lattice or world coordinate
@@ -1424,10 +1424,10 @@ void BSplineFreeFormTransformation3D::BendingEnergyGradient(double *gradient, do
                // which is multiplied by weight w[n][m] according to the chain rule
         for (int i = 0; i < 2; ++i)
         for (int j = 0; j < 2; ++j, ++m) {
-            w[n][m]  = Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][0] * _matW2L(0, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dudu dPhi ) * du/dx_i * du/dx_j
-            w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][1] * _matW2L(0, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dudv dPhi ) * du/dx_i * dv/dx_j
-            w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][1] * _matW2L(1, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dvdu dPhi ) * dv/dx_i * du/dx_j
-            w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][2] * _matW2L(1, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dvdv dPhi ) * dv/dx_i * dv/dx_j
+            w[n][m]  = BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][0] * _matW2L(0, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dudu dPhi ) * du/dx_i * du/dx_j
+            w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][1] * _matW2L(0, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dudv dPhi ) * du/dx_i * dv/dx_j
+            w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][1] * _matW2L(1, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dvdu dPhi ) * dv/dx_i * du/dx_j
+            w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][2] * _matW2L(1, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dvdv dPhi ) * dv/dx_i * dv/dx_j
         }
         // Add weights of ( d^2 T(x[n]) / dx_i dx_j ) and ( d^2 T(x[n]) / dx_j dx_i )
         // for i != j as these derivatives are identical and re-order remaining weights.
@@ -1436,9 +1436,9 @@ void BSplineFreeFormTransformation3D::BendingEnergyGradient(double *gradient, do
       }
     } else {
       for (n = 0; n < 9; ++n) {
-        w[n][0] =       Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][0];
-        w[n][1] = 2.0 * Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][1];
-        w[n][2] =       Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][2];
+        w[n][0] = BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][0];
+        w[n][1] = 2.0 * BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][1];
+        w[n][2] = BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_2D[n][2];
       }
     }
 
@@ -1472,7 +1472,7 @@ void BSplineFreeFormTransformation3D::BendingEnergyGradient(double *gradient, do
   } else {
 
     // Initialize static lookup table
-    Evaluate2ndOrderBSplineFFDDerivatives::InitializeLookupTable3D();
+	  BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::InitializeLookupTable3D();
 
     // Add a layer of boundary voxels to avoid additional boundary conditions
     ImageAttributes attr = this->Attributes();
@@ -1487,7 +1487,7 @@ void BSplineFreeFormTransformation3D::BendingEnergyGradient(double *gradient, do
     GenericImage<Vector> dyz(attr);
     GenericImage<Vector> dzz(attr);
 
-    Evaluate2ndOrderBSplineFFDDerivatives eval(this, wrt_world);
+	BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives eval(this, wrt_world);
     ParallelForEachVoxel(attr, dxx, dxy, dxz, dyy, dyz, dzz, eval);
 
     // Compute 3rd order derivatives, twice w.r.t. lattice or world coordinate
@@ -1504,15 +1504,15 @@ void BSplineFreeFormTransformation3D::BendingEnergyGradient(double *gradient, do
                // which is multiplied by weight w[n][m] according to the chain rule
         for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j, ++m) {
-          w[n][m]  = Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][0] * _matW2L(0, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dudu dPhi ) * du/dx_i * du/dx_j
-          w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][1] * _matW2L(0, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dudv dPhi ) * du/dx_i * dv/dx_j
-          w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][2] * _matW2L(0, i) * _matW2L(2, j); // ( d^3 T(x[n]) / dudw dPhi ) * du/dx_i * dw/dx_j
-          w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][1] * _matW2L(1, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dvdu dPhi ) * dv/dx_i * du/dx_j
-          w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][3] * _matW2L(1, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dvdv dPhi ) * dv/dx_i * dv/dx_j
-          w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][4] * _matW2L(1, i) * _matW2L(2, j); // ( d^3 T(x[n]) / dvdw dPhi ) * dv/dx_i * dw/dx_j
-          w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][2] * _matW2L(2, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dwdu dPhi ) * dw/dx_i * du/dx_j
-          w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][4] * _matW2L(2, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dwdv dPhi ) * dw/dx_i * dv/dx_j
-          w[n][m] += Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][5] * _matW2L(2, i) * _matW2L(2, j); // ( d^3 T(x[n]) / dwdw dPhi ) * dw/dx_i * dw/dx_j
+          w[n][m]  = BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][0] * _matW2L(0, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dudu dPhi ) * du/dx_i * du/dx_j
+          w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][1] * _matW2L(0, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dudv dPhi ) * du/dx_i * dv/dx_j
+          w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][2] * _matW2L(0, i) * _matW2L(2, j); // ( d^3 T(x[n]) / dudw dPhi ) * du/dx_i * dw/dx_j
+          w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][1] * _matW2L(1, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dvdu dPhi ) * dv/dx_i * du/dx_j
+          w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][3] * _matW2L(1, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dvdv dPhi ) * dv/dx_i * dv/dx_j
+          w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][4] * _matW2L(1, i) * _matW2L(2, j); // ( d^3 T(x[n]) / dvdw dPhi ) * dv/dx_i * dw/dx_j
+          w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][2] * _matW2L(2, i) * _matW2L(0, j); // ( d^3 T(x[n]) / dwdu dPhi ) * dw/dx_i * du/dx_j
+          w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][4] * _matW2L(2, i) * _matW2L(1, j); // ( d^3 T(x[n]) / dwdv dPhi ) * dw/dx_i * dv/dx_j
+          w[n][m] += BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][5] * _matW2L(2, i) * _matW2L(2, j); // ( d^3 T(x[n]) / dwdw dPhi ) * dw/dx_i * dw/dx_j
         }
         // Add weights of ( d^2 T(x[n]) / dx_i dx_j ) and ( d^2 T(x[n]) / dx_j dx_i )
         // for i != j as these derivatives are identical and re-order remaining weights.
@@ -1524,12 +1524,12 @@ void BSplineFreeFormTransformation3D::BendingEnergyGradient(double *gradient, do
       }
     } else {
       for (n = 0; n < 27; ++n) {
-        w[n][0] =       Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][0];
-        w[n][1] = 2.0 * Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][1];
-        w[n][2] = 2.0 * Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][2];
-        w[n][3] =       Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][3];
-        w[n][4] = 2.0 * Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][4];
-        w[n][5] =       Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][5];
+        w[n][0] = BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][0];
+        w[n][1] = 2.0 * BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][1];
+        w[n][2] = 2.0 * BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][2];
+        w[n][3] = BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][3];
+        w[n][4] = 2.0 * BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][4];
+        w[n][5] = BSplineFreeFormTransformation3DUtils::Evaluate2ndOrderBSplineFFDDerivatives::LookupTable_3D[n][5];
       }
     }
 
